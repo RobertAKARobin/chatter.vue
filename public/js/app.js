@@ -7,33 +7,33 @@ var fb = (function(){
 	return firebase.database();
 })();
 
-var List = Vue.extend({
+var ConvoList = Vue.extend({
 	data: function(){
 		return {
 			isShown: false,
-			blank: {
+			newConvo: {
 				content: ''
 			}
 		}
 	},
 	methods: {
 		create: function(){
-			var list = this;
-			list.$firebaseRefs.all.push(list.blank);
-			list.blank = {};
+			var convoList = this;
+			convoList.$firebaseRefs.all.push(convoList.newConvo);
+			convoList.newConvo = {};
 		},
-		destroy: function(item){
-			var list = this;
-			list.$firebaseRefs.all.child(item['.key']).remove();
+		destroy: function(convo){
+			var convoList = this;
+			convoList.$firebaseRefs.all.child(convo['.key']).remove();
 		}
 	}
 });
 
 document.addEventListener('DOMContentLoaded', function(){
-	var list = new List({
-		el: '#items',
+	var convoList = new ConvoList({
+		el: '#convos',
 		firebase: {
-			all: fb.ref('/items')
+			all: fb.ref('/convos')
 		}
 	});
 
