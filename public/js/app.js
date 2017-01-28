@@ -7,35 +7,40 @@ var fb = (function(){
 	return firebase.database();
 })();
 
-var Item = (function(){
-	var pub = {};
-	var ref = {};
-	var vue = new Vue({
-		data: {
-			all: [],
-			blank: {}
-		},
-		methods: {
-			create: function(){
-				var vue = this;
-				ref.push(vue.blank);
-				vue.blank = {};
-			},
-			destroy: function(item){
-				var vue = this;
-				ref.child(item['.key']).remove();
+var List = Vue.extend({
+	data: function(){
+		return {
+			isShown: false,
+			blank: {
+				content: ''
 			}
+		}
+	},
+	methods: {
+		create: function(){
+			var list = this;
+			list.$firebaseRefs.all.push(list.blank);
+			list.blank = {};
+		},
+		destroy: function(item){
+			var list = this;
+			list.$firebaseRefs.all.child(item['.key']).remove();
+		}
+	}
+});
+
+document.addEventListener('DOMContentLoaded', function(){
+	var list = new List({
+		el: '#items',
+		firebase: {
+			all: fb.ref('/items')
 		}
 	});
 
-	pub.loadAndMountTo = function(selector){
-		ref = fb.ref('/items');
-		vue.$bindAsArray('all', ref);
-		vue.$mount(selector);
-	}
-	return pub;
-})();
-
-document.addEventListener('DOMContentLoaded', function(){
-	Item.loadAndMountTo('#items');
+	var console = new Vue({
+		el: '#console',
+		firebase: {
+			all: fb.ref('/')
+		}
+	});
 });

@@ -11,23 +11,29 @@
 	<body>
 		<h1>Hello, world</h1>
 
-		<div id="items" class="postlist">
-			<ul>
-				<li>
-					<div class="output">
-						<input v-model="blank.content" />
-					</div>
-					<div class="controls">
-						<a @click="create">Add</a>
-					</div>
-				</li>
-				<li v-for="item in all">
-					<h3 class="output">{{item.content}}</h3>
-					<div class="controls">
-						<a @click="destroy(item)">Delete</a>
-					</div>
-				</li>
-			</ul>
+		<div class="wrap">
+			<div id="items" class="postlist">
+				<ul>
+					<li>
+						<div class="output">
+							<input v-model="blank.content" />
+						</div>
+						<div class="controls">
+							<a @click="create()">Add</a>
+						</div>
+					</li>
+					<li v-for="item in all">
+						<h3 class="output" @click="show(item)">{{item.content}}</h3>
+						<div class="controls">
+							<a @click="destroy(item)">Delete</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<div id="console" class="console">
+				<pre>{{all}}</pre>
+			</div>
 		</div>
 	</body>
 </html>

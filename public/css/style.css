@@ -41,6 +41,17 @@ h1{
 .postlist li{
 	margin-bottom:10px;
 }
+.wrap{
+	display:flex;
+}
+.wrap > *{
+	flex-basis:50%;
+}
+.console{
+	font-size:10px;
+	line-height:12px;
+	font-family:monospace;
+}
 input{
 	border-width:2px;
 	border-style:solid;
