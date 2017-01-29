@@ -26,6 +26,18 @@ var ConvoHeaderList = Vue.extend({
 		destroy: function(convoHeader){
 			var convoHeaderList = this;
 			convoHeaderList.$firebaseRefs.all.child(convoHeader['.key']).remove();
+		},
+		show: function(convoHeader){
+			var convoHeaderList = this;
+			Vue.set(convoHeader, 'isShown', !(convoHeader.isShown));
+			if(!convoHeader.convo){
+				convoHeader.convo = new Convo({
+					el: document.getElementById(convoHeader['.key']),
+					firebase: {
+						all: fb.ref('/convos').child(convoHeader['.key'])
+					}
+				});
+			}
 		}
 	},
 	created: function(){
@@ -38,6 +50,33 @@ var ConvoHeader = Vue.extend({
 	data: function(){
 		return {
 			title: ''
+		}
+	}
+});
+
+var Convo = Vue.extend({
+	data: function(){
+		return {
+			newPost: {}
+		}
+	},
+	methods: {
+		resetNew: function(){
+			var convo = this;
+			convo.newPost = Post.options.data();
+		},
+		createPost: function(){
+			var convo = this;
+			convo.$firebaseRefs.all.push(convo.newPost);
+			convo.resetNew();
+		}
+	}
+});
+
+var Post = Vue.extend({
+	data: function(){
+		return {
+			content: ''
 		}
 	}
 });

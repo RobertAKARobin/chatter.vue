@@ -23,9 +23,21 @@
 						</div>
 					</li>
 					<li v-for="convoHeader in all">
-						<h3 class="output">{{convoHeader.title}}</h3>
+						<h3 class="output" @click="show(convoHeader)">{{convoHeader.title}}</h3>
 						<div class="controls">
 							<a @click="destroy(convoHeader)">Delete</a>
+						</div>
+						<div v-if="convoHeader.isShown" :id="convoHeader['.key']">
+							<ul>
+								<li v-for="post in convoHeader.convo.all">
+									{{post.content}}
+								</li>
+								<li>
+									<input
+										v-model="convoHeader.convo.newPost.content" @keydown.enter="convoHeader.convo.createPost()"
+									/>
+								</li>
+							</ul>
 						</div>
 					</li>
 				</ul>
