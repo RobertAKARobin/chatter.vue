@@ -7,33 +7,46 @@ var fb = (function(){
 	return firebase.database();
 })();
 
-var ConvoList = Vue.extend({
+var ConvoHeaderList = Vue.extend({
 	data: function(){
 		return {
-			isShown: false,
-			newConvo: {
-				content: ''
-			}
+			newConvoHeader: {}
 		}
 	},
 	methods: {
-		create: function(){
-			var convoList = this;
-			convoList.$firebaseRefs.all.push(convoList.newConvo);
-			convoList.newConvo = {};
+		resetNew: function(){
+			var convoHeaderList = this;
+			convoHeaderList.newConvoHeader = ConvoHeader.options.data();
 		},
-		destroy: function(convo){
-			var convoList = this;
-			convoList.$firebaseRefs.all.child(convo['.key']).remove();
+		create: function(){
+			var convoHeaderList = this;
+			convoHeaderList.$firebaseRefs.all.push(convoHeaderList.newConvoHeader);
+			convoHeaderList.resetNew();
+		},
+		destroy: function(convoHeader){
+			var convoHeaderList = this;
+			convoHeaderList.$firebaseRefs.all.child(convoHeader['.key']).remove();
+		}
+	},
+	created: function(){
+		var convoHeaderList = this;
+		convoHeaderList.resetNew();
+	}
+});
+
+var ConvoHeader = Vue.extend({
+	data: function(){
+		return {
+			title: ''
 		}
 	}
 });
 
 document.addEventListener('DOMContentLoaded', function(){
-	var convoList = new ConvoList({
-		el: '#convos',
+	var convoList = new ConvoHeaderList({
+		el: '#convoheaders',
 		firebase: {
-			all: fb.ref('/convos')
+			all: fb.ref('/convoheaders')
 		}
 	});
 

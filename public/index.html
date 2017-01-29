@@ -12,20 +12,20 @@
 		<h1>Hello, world</h1>
 
 		<div class="wrap">
-			<div id="convos" class="postlist">
+			<div id="convoheaders" class="postlist">
 				<ul>
 					<li>
 						<div class="output">
-							<input v-model="newConvo.title" />
+							<input v-model="newConvoHeader.title" />
 						</div>
 						<div class="controls">
 							<a @click="create()">Add</a>
 						</div>
 					</li>
-					<li v-for="convo in all">
-						<h3 class="output" @click="show(convo)">{{convo.title}}</h3>
+					<li v-for="convoHeader in all">
+						<h3 class="output">{{convoHeader.title}}</h3>
 						<div class="controls">
-							<a @click="destroy(convo)">Delete</a>
+							<a @click="destroy(convoHeader)">Delete</a>
 						</div>
 					</li>
 				</ul>
