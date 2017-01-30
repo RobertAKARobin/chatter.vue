@@ -27,18 +27,7 @@
 						<div class="controls">
 							<a @click="destroy(convoHeader)">Delete</a>
 						</div>
-						<div v-if="convoHeader.isShown" :id="convoHeader['.key']">
-							<ul>
-								<li v-for="post in convoHeader.convo.all">
-									{{post.content}}
-								</li>
-								<li>
-									<input
-										v-model="convoHeader.convo.newPost.content" @keydown.enter="convoHeader.convo.createPost()"
-									/>
-								</li>
-							</ul>
-						</div>
+						<convo v-if="convoHeader.isShown" :convo-header-key="convoHeader['.key']"></convo>
 					</li>
 				</ul>
 			</div>
@@ -47,5 +36,20 @@
 				<pre>{{all}}</pre>
 			</div>
 		</div>
+
+		<template id="convo">
+			<div>
+				<ul>
+					<li v-for="post in all">
+						{{post.content}}
+					</li>
+					<li>
+						<input
+							v-model="newPost.content" @keydown.enter="createPost()"
+						/>
+					</li>
+				</ul>
+			</div>
+		</template>
 	</body>
 </html>
