@@ -7,7 +7,8 @@ var fb = (function(){
 	return firebase.database();
 })();
 
-var ConvoHeaderList = Vue.extend({
+var ConvoHeaderList = Vue.component('convoHeaderList', {
+	template: '#convoHeaderList',
 	data: function(){
 		return {
 			newConvoHeader: {}
@@ -35,6 +36,7 @@ var ConvoHeaderList = Vue.extend({
 	},
 	created: function(){
 		var convoHeaderList = this;
+		convoHeaderList.$bindAsArray('all', fb.ref('/convoheaders'));
 		convoHeaderList.resetNew();
 	}
 });
@@ -82,18 +84,21 @@ var Post = Vue.extend({
 	}
 });
 
-document.addEventListener('DOMContentLoaded', function(){
-	var convoList = new ConvoHeaderList({
-		el: '#convoheaders',
-		firebase: {
-			all: fb.ref('/convoheaders')
+var FBConsole = Vue.component('fbConsole', {
+	data: function(){
+		return {
+			all: null
 		}
-	});
+	},
+	template: '#fbConsole',
+	created: function(){
+		var tree = this;
+		tree.$bindAsArray('all', fb.ref('/'));
+	}
+});
 
-	var console = new Vue({
-		el: '#console',
-		firebase: {
-			all: fb.ref('/')
-		}
+document.addEventListener('DOMContentLoaded', function(){
+	var app = new Vue({
 	});
+	app.$mount('#app');
 });

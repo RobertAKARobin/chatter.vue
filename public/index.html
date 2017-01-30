@@ -11,8 +11,13 @@
 	<body>
 		<h1>Hello, world</h1>
 
-		<div class="wrap">
-			<div id="convoheaders" class="postlist">
+		<div class="wrap" id="app">
+			<convo-header-list></convo-header-list>
+			<fb-console></fb-console>
+		</div>
+
+		<template id="convoHeaderList">
+			<div class="postlist">
 				<ul>
 					<li>
 						<div class="output">
@@ -31,11 +36,7 @@
 					</li>
 				</ul>
 			</div>
-
-			<div id="console" class="console">
-				<pre>{{all}}</pre>
-			</div>
-		</div>
+		</template>
 
 		<template id="convo">
 			<div>
@@ -51,5 +52,12 @@
 				</ul>
 			</div>
 		</template>
+
+		<template id="fbConsole">
+			<div class="console">
+				<pre>{{all}}</pre>
+			</div>
+		</template>
+
 	</body>
 </html>
