@@ -67,12 +67,17 @@ var Convo = Vue.component('convo', {
 		createPost: function(){
 			var convo = this;
 			convo.$firebaseRefs.all.push(convo.newPost);
+			convo.$firebaseRefs.header.update({
+				count: (convo.header.count || 0) + 1
+			});
 			convo.resetNew();
 		}
 	},
 	created: function(){
 		var convo = this;
-		convo.$bindAsArray('all', fb.ref('/convos').child(convo.convoHeaderKey));
+		var id = convo.$route.params.id;
+		convo.$bindAsObject('header', fb.ref('/convoheaders').child(id));
+		convo.$bindAsArray('all', fb.ref('/convos').child(id));
 	}
 });
 
@@ -98,7 +103,22 @@ var FBConsole = Vue.component('fbConsole', {
 });
 
 document.addEventListener('DOMContentLoaded', function(){
+	var router = new VueRouter({
+		routes: [
+			{
+				path: '/',
+				name: 'convoHeaderList',
+				component: ConvoHeaderList
+			},
+			{
+				path: '/convo/:id',
+				name: 'convoShow',
+				component: Convo
+			}
+		]
+	});
 	var app = new Vue({
+		router: router
 	});
 	app.$mount('#app');
 });
