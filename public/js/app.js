@@ -26,6 +26,7 @@ var ConvoHeaderList = Vue.extend({
 		destroy: function(convoHeader){
 			var convoHeaderList = this;
 			convoHeaderList.$firebaseRefs.all.child(convoHeader['.key']).remove();
+			fb.ref('/convos').child(convoHeader['.key']).remove();
 		},
 		show: function(convoHeader){
 			var convoHeaderList = this;
