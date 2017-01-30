@@ -17,7 +17,7 @@ var ConvoHeaderList = Vue.component('convoHeaderList', {
 	methods: {
 		resetNew: function(){
 			var convoHeaderList = this;
-			convoHeaderList.newConvoHeader = ConvoHeader.options.data();
+			convoHeaderList.newConvoHeader = new ConvoHeader();
 		},
 		create: function(){
 			var convoHeaderList = this;
@@ -41,13 +41,11 @@ var ConvoHeaderList = Vue.component('convoHeaderList', {
 	}
 });
 
-var ConvoHeader = Vue.extend({
-	data: function(){
-		return {
-			title: ''
-		}
+var ConvoHeader = function(){
+	return {
+		title: ''
 	}
-});
+}
 
 var Convo = Vue.component('convo', {
 	template: '#convo',
@@ -62,7 +60,7 @@ var Convo = Vue.component('convo', {
 	methods: {
 		resetNew: function(){
 			var convo = this;
-			convo.newPost = Post.options.data();
+			convo.newPost = new Post();
 		},
 		createPost: function(){
 			var convo = this;
@@ -81,13 +79,11 @@ var Convo = Vue.component('convo', {
 	}
 });
 
-var Post = Vue.extend({
-	data: function(){
-		return {
-			content: ''
-		}
+var Post = function(){
+	return {
+		content: ''
 	}
-});
+}
 
 var FBConsole = Vue.component('fbConsole', {
 	data: function(){
