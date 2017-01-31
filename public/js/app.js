@@ -24,11 +24,6 @@ var ConvoHeaderList = Vue.component('convoHeaderList', {
 			convoHeaderList.$firebaseRefs.all.push(convoHeaderList.newConvoHeader);
 			convoHeaderList.resetNew();
 		},
-		destroy: function(convoHeader){
-			var convoHeaderList = this;
-			convoHeaderList.$firebaseRefs.all.child(convoHeader['.key']).remove();
-			fb.ref('/convos').child(convoHeader['.key']).remove();
-		},
 		show: function(convoHeader){
 			var convoHeaderList = this;
 			Vue.set(convoHeader, 'isShown', !(convoHeader.isShown));
@@ -69,6 +64,12 @@ var Convo = Vue.component('convo', {
 				count: (convo.header.count || 0) + 1
 			});
 			convo.resetNew();
+		},
+		destroy: function(){
+			var convo = this;
+			convo.$firebaseRefs.header.remove();
+			convo.$firebaseRefs.all.remove();
+			Router.push({name: 'convoHeaderList'});
 		}
 	},
 	created: function(){
@@ -98,23 +99,23 @@ var FBConsole = Vue.component('fbConsole', {
 	}
 });
 
-document.addEventListener('DOMContentLoaded', function(){
-	var router = new VueRouter({
-		routes: [
-			{
-				path: '/',
-				name: 'convoHeaderList',
-				component: ConvoHeaderList
-			},
-			{
-				path: '/convo/:id',
-				name: 'convoShow',
-				component: Convo
-			}
-		]
-	});
-	var app = new Vue({
-		router: router
-	});
-	app.$mount('#app');
+var Router = new VueRouter({
+	routes: [
+		{
+			path: '/',
+			name: 'convoHeaderList',
+			component: ConvoHeaderList
+		},
+		{
+			path: '/convo/:id',
+			name: 'convoShow',
+			component: Convo
+		}
+	]
 });
+
+var app = new Vue({
+	router: Router
+});
+
+app.$mount('#app');
