@@ -1,13 +1,22 @@
 'use strict';
 
-var fb = (function(){
+var fb,
+	app,
+	FBConsole,
+	Router,
+	ConvoHeaderList,
+	ConvoHeader,
+	Convo,
+	Post;
+
+fb = (function(){
 	firebase.initializeApp({
 		databaseURL: 'ws://127.0.1:5000'
 	});
 	return firebase.database();
 })();
 
-var ConvoHeaderList = Vue.component('convoHeaderList', {
+ConvoHeaderList = Vue.component('convoHeaderList', {
 	template: '#convoHeaderList',
 	data: function(){
 		return {
@@ -36,13 +45,13 @@ var ConvoHeaderList = Vue.component('convoHeaderList', {
 	}
 });
 
-var ConvoHeader = function(){
+ConvoHeader = function(){
 	return {
 		title: ''
 	}
 }
 
-var Convo = Vue.component('convo', {
+Convo = Vue.component('convo', {
 	template: '#convo',
 	props: [
 		'convoHeaderKey'
@@ -80,13 +89,13 @@ var Convo = Vue.component('convo', {
 	}
 });
 
-var Post = function(){
+Post = function(){
 	return {
 		content: ''
 	}
 }
 
-var FBConsole = Vue.component('fbConsole', {
+FBConsole = Vue.component('fbConsole', {
 	data: function(){
 		return {
 			all: null
@@ -99,23 +108,25 @@ var FBConsole = Vue.component('fbConsole', {
 	}
 });
 
-var Router = new VueRouter({
-	routes: [
-		{
-			path: '/',
-			name: 'convoHeaderList',
-			component: ConvoHeaderList
-		},
-		{
-			path: '/convo/:id',
-			name: 'convoShow',
-			component: Convo
-		}
-	]
-});
+document.addEventListener('DOMContentLoaded', function Main(){
+	Router = new VueRouter({
+		routes: [
+			{
+				path: '/',
+				name: 'convoHeaderList',
+				component: ConvoHeaderList
+			},
+			{
+				path: '/convo/:id',
+				name: 'convoShow',
+				component: Convo
+			}
+		]
+	});
 
-var app = new Vue({
-	router: Router
-});
+	app = new Vue({
+		router: Router
+	});
 
-app.$mount('#app');
+	app.$mount('#app');
+});
