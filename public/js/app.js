@@ -20,7 +20,8 @@ ConvoHeaderList = Vue.component('convoHeaderList', {
 	template: '#convoHeaderList',
 	data: function(){
 		return {
-			newConvoHeader: {}
+			newConvoHeader: {},
+			error: ''
 		}
 	},
 	methods: {
@@ -30,7 +31,9 @@ ConvoHeaderList = Vue.component('convoHeaderList', {
 		},
 		create: function(){
 			var convoHeaderList = this;
-			convoHeaderList.$firebaseRefs.all.push(convoHeaderList.newConvoHeader);
+			convoHeaderList.$firebaseRefs.all.push(convoHeaderList.newConvoHeader, function(err){
+				convoHeaderList.error = (err ? 'Title cannot be blank!' : '');
+			});
 			convoHeaderList.resetNew();
 		},
 		show: function(convoHeader){

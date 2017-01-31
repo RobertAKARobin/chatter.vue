@@ -55,6 +55,9 @@ h3{
 	line-height:12px;
 	font-family:monospace;
 }
+.error{
+	color:red;
+}
 input{
 	border-width:2px;
 	border-style:solid;

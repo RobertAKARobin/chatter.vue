@@ -1,6 +1,13 @@
 {
 	"rules": {
 		".read": true,
-		".write": true
+		".write": true,
+		"convoheaders": {
+			"$key": {
+				"title": {
+					".validate": "newData.val().length > 0"
+				}
+			}
+		}
 	}
 }
