@@ -46,20 +46,25 @@
 
 		<template id="convo">
 			<div>
-				<h3>{{header.title}}  ({{header.count || 0}})</h3>
-				<div class="controls">
-					<a @click="destroy()">Delete</a>
+				<div v-if="header.title">
+					<h3>{{header.title}}  ({{header.count || 0}})</h3>
+					<div class="controls">
+						<a @click="destroy()">Delete</a>
+					</div>
+					<ul>
+						<li v-for="post in all">
+							{{post.content}}
+						</li>
+						<li>
+							<input
+								v-model="newPost.content" @keydown.enter="createPost()"
+							/>
+						</li>
+					</ul>
 				</div>
-				<ul>
-					<li v-for="post in all">
-						{{post.content}}
-					</li>
-					<li>
-						<input
-							v-model="newPost.content" @keydown.enter="createPost()"
-						/>
-					</li>
-				</ul>
+				<div v-else>
+					<h2>This doesn't exist.</h2>
+				</div>
 			</div>
 		</template>
 
