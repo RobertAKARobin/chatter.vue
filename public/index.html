@@ -3,8 +3,8 @@
 	<head>
 		<title>Chatter.vue</title>
 		<script src="./vendor/vue/dist/vue.js"></script>
-		<script src="./vendor/vuefire/dist/vuefire.min.js"></script>
-		<script src="./vendor/vue-router/dist/vue-router.min.js"></script>
+		<script src="./vendor/vuefire/dist/vuefire.js"></script>
+		<script src="./vendor/vue-router/dist/vue-router.js"></script>
 		<script src="./vendor/firebase/firebase.js"></script>
 		<script src="./js/app.js"></script>
 		<link rel="stylesheet" href="./css/style.css" />
@@ -57,9 +57,7 @@
 							{{post.content}}
 						</li>
 						<li>
-							<input
-								v-model="newPost.content" @keydown.enter="createPost()"
-							/>
+							<input v-model="newPost.content" @keydown.enter="createPost()" />
 						</li>
 					</ul>
 				</div>

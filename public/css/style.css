@@ -54,6 +54,7 @@ h3{
 	font-size:10px;
 	line-height:12px;
 	font-family:monospace;
+	background-color:#eee;
 }
 .error{
 	color:red;
