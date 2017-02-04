@@ -38,14 +38,31 @@ ConvoHeaderForm = Vue.component('convoHeaderForm', {
 		create: function(){
 			var form = this;
 			fb.ref('/convoHeaders').push(form.db, form.ifError);
+			form.reset();
 		},
 		reset: function(){
 			var form = this;
-			Object.assign(form.$data, form.options.data());
+			Object.assign(form.$data, ConvoHeaderForm.options.data());
 		},
 		ifError: function(err){
 			var form = this;
 			form.error = (err ? 'Title cannot be blank!' : '');
+		}
+	}
+});
+
+ConvoHeader = Vue.component('convoHeader', {
+	template: '#convoHeader',
+	props: ['db'],
+	computed: {
+		route: function(){
+			var convoHeader = this;
+			return {
+				name: 'convoShow',
+				params: {
+					id: convoHeader.db['.key']
+				}
+			}
 		}
 	}
 });
@@ -57,7 +74,8 @@ Convo = Vue.component('convo', {
 	],
 	data: function(){
 		return {
-			newPost: {}
+			newPost: {},
+			header: {}
 		}
 	},
 	methods: {

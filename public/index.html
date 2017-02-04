@@ -30,13 +30,17 @@
 						<convo-header-form></convo-header-form>
 					</li>
 					<li v-for="convoHeader in all">
-						<h3>
-							<router-link :to="{name: 'convoShow', params: {id: convoHeader['.key']}}">{{convoHeader.title}}</router-link>
-							({{convoHeader.count || 0}})
-						</h3>
+						<convo-header :db="convoHeader"></convo-headeR>
 					</li>
 				</ul>
 			</div>
+		</template>
+
+		<template id="convoHeader">
+			<h3>
+				<router-link :to="route">{{db.title}}</router-link>
+				({{db.count || 0}})
+			</h3>
 		</template>
 
 		<template id="convoHeaderForm">
@@ -54,7 +58,7 @@
 		<template id="convo">
 			<div>
 				<div v-if="header.title">
-					<h3>{{header.title}}  ({{header.count || 0}})</h3>
+					<convo-header :db="header"></convo-header>
 					<div class="controls">
 						<a @click="destroy()">Delete</a>
 					</div>
