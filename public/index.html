@@ -27,13 +27,7 @@
 			<div class="postlist">
 				<ul>
 					<li>
-						<div class="output">
-							<input v-model="newConvoHeader.title" />
-						</div>
-						<div class="controls">
-							<p class="error">{{error}}</p>
-							<a @click="create()">Add</a>
-						</div>
+						<convo-header-form></convo-header-form>
 					</li>
 					<li v-for="convoHeader in all">
 						<h3>
@@ -42,6 +36,18 @@
 						</h3>
 					</li>
 				</ul>
+			</div>
+		</template>
+
+		<template id="convoHeaderForm">
+			<div>
+				<div class="output">
+					<input v-model="db.title" />
+				</div>
+				<div class="controls">
+					<p class="error">{{error}}</p>
+					<a @click="create()">Add</a>
+				</div>
 			</div>
 		</template>
 

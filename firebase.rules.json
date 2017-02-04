@@ -2,7 +2,7 @@
 	"rules": {
 		".read": true,
 		".write": true,
-		"convoheaders": {
+		"convoHeaders": {
 			"$key": {
 				"title": {
 					".validate": "newData.val().length > 0"

@@ -5,6 +5,7 @@ var fb,
 	FBConsole,
 	Router,
 	ConvoHeaderList,
+	ConvoHeaderForm,
 	ConvoHeader,
 	Convo,
 	Post;
@@ -18,41 +19,36 @@ fb = (function(){
 
 ConvoHeaderList = Vue.component('convoHeaderList', {
 	template: '#convoHeaderList',
-	data: function(){
-		return {
-			newConvoHeader: {},
-			error: ''
-		}
-	},
-	methods: {
-		resetNew: function(){
-			var convoHeaderList = this;
-			convoHeaderList.newConvoHeader = new ConvoHeader();
-		},
-		create: function(){
-			var convoHeaderList = this;
-			convoHeaderList.$firebaseRefs.all.push(convoHeaderList.newConvoHeader, function(err){
-				convoHeaderList.error = (err ? 'Title cannot be blank!' : '');
-			});
-			convoHeaderList.resetNew();
-		},
-		show: function(convoHeader){
-			var convoHeaderList = this;
-			Vue.set(convoHeader, 'isShown', !(convoHeader.isShown));
-		}
-	},
-	created: function(){
-		var convoHeaderList = this;
-		convoHeaderList.$bindAsArray('all', fb.ref('/convoheaders'));
-		convoHeaderList.resetNew();
+	firebase: {
+		all: fb.ref('/convoHeaders')
 	}
 });
 
-ConvoHeader = function(){
-	return {
-		title: ''
+ConvoHeaderForm = Vue.component('convoHeaderForm', {
+	template: '#convoHeaderForm',
+	data: function(){
+		return {
+			error: '',
+			db: {
+				title: ''
+			}
+		}
+	},
+	methods: {
+		create: function(){
+			var form = this;
+			fb.ref('/convoHeaders').push(form.db, form.ifError);
+		},
+		reset: function(){
+			var form = this;
+			Object.assign(form.$data, form.options.data());
+		},
+		ifError: function(err){
+			var form = this;
+			form.error = (err ? 'Title cannot be blank!' : '');
+		}
 	}
-}
+});
 
 Convo = Vue.component('convo', {
 	template: '#convo',
@@ -87,7 +83,7 @@ Convo = Vue.component('convo', {
 	created: function(){
 		var convo = this;
 		var id = convo.$route.params.id;
-		convo.$bindAsObject('header', fb.ref('/convoheaders').child(id));
+		convo.$bindAsObject('header', fb.ref('/convoHeaders').child(id));
 		convo.$bindAsArray('all', fb.ref('/convos').child(id));
 	}
 });
