@@ -27,6 +27,10 @@ a{
 	text-decoration:underline;
 	cursor:pointer;
 }
+a.disabled{
+	color:#999;
+	cursor:default;
+}
 h1{
 	font-size:36px;
 	font-weight:bold;

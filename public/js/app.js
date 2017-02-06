@@ -70,7 +70,7 @@ ConvoHeaderForm = Vue.component('convoHeaderForm', {
 		save: function(){
 			var form = this;
 			delete form.db['.key']; //Hmm
-			form.$firebaseRefs.db.update(form.db);
+			form.$firebaseRefs.db.update(form.db, form.ifError);
 		},
 		destroy: function(){
 			var form = this;

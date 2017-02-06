@@ -52,10 +52,12 @@
 						<div v-if="fbid">
 							<a @click="hide()">Cancel</a>
 							<a @click="destroy()">Delete</a>
-							<a @click="save()">Save</a>
+							<a v-if="db.title" @click="save()">Save</a>
+							<a v-if="!db.title" class="disabled">Save</a>
 						</div>
 						<div v-else>
-							<a @click="create()">Add</a>
+							<a v-if="db.title" @click="create()">Add</a>
+							<a v-if="!db.title" class="disabled">Add</a>
 						</div>
 					</div>
 				</div>
