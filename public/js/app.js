@@ -37,6 +37,12 @@ ConvoHeaderForm = Vue.component('convoHeaderForm', {
 			}
 		}
 	},
+	computed: {
+		isSubmittable: function(){
+			var form = this;
+			return (form.db.title);
+		}
+	},
 	methods: {
 		create: function(){
 			var form = this;
@@ -103,6 +109,7 @@ Convo = Vue.component('convo', {
 		'convoHeaderKey'
 	],
 	data: function(){
+		var convo = this;
 		return {
 			newPost: {
 				content: ''
