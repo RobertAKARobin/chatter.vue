@@ -104,8 +104,11 @@ Convo = Vue.component('convo', {
 	],
 	data: function(){
 		return {
-			newPost: {},
-			header: {}
+			newPost: {
+				content: ''
+			},
+			header: {},
+			error: ''
 		}
 	},
 	methods: {
@@ -113,13 +116,25 @@ Convo = Vue.component('convo', {
 			var convo = this;
 			convo.newPost = new Post();
 		},
+		ifError: function(err){
+			var convo = this;
+			convo.error = (err ? 'Cannot be blank!' : '');
+		},
 		createPost: function(){
 			var convo = this;
-			convo.$firebaseRefs.all.push(convo.newPost);
+			convo.$firebaseRefs.all.push(convo.newPost, function(err){
+				if(err) convo.ifError(err);
+				else {
+					convo.resetNew();
+					convo.countUp();
+				}
+			});
+		},
+		countUp: function(){
+			var convo = this;
 			convo.$firebaseRefs.header.update({
 				count: (convo.header.count || 0) + 1
 			});
-			convo.resetNew();
 		}
 	},
 	created: function(){

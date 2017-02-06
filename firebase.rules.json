@@ -3,9 +3,18 @@
 		".read": true,
 		".write": true,
 		"convoHeaders": {
-			"$key": {
+			"$convo": {
 				"title": {
 					".validate": "newData.val().length > 0"
+				}
+			}
+		},
+		"convos": {
+			"$convo": {
+				"$post": {
+					"content": {
+						".validate": "newData.val().length > 0"
+					}
 				}
 			}
 		}

@@ -76,6 +76,7 @@
 						</li>
 						<li>
 							<input v-model="newPost.content" @keydown.enter="createPost()" />
+							<p class="error">{{error}}</p>
 						</li>
 					</ul>
 				</div>
