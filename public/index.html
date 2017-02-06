@@ -27,7 +27,7 @@
 			<div class="postlist">
 				<ul>
 					<li>
-						<convo-header-form></convo-header-form>
+						<convo-header-form shown-init="true"></convo-header-form>
 					</li>
 					<li v-for="convoHeader in all">
 						<convo-header :db="convoHeader"></convo-headeR>
@@ -45,12 +45,22 @@
 
 		<template id="convoHeaderForm">
 			<div>
-				<div class="output">
+				<div v-if="shown">
 					<input v-model="db.title" />
+					<div class="controls">
+						<p class="error">{{error}}</p>
+						<div v-if="fbid">
+							<a @click="hide()">Cancel</a>
+							<a @click="destroy()">Delete</a>
+							<a @click="save()">Save</a>
+						</div>
+						<div v-else>
+							<a @click="create()">Add</a>
+						</div>
+					</div>
 				</div>
-				<div class="controls">
-					<p class="error">{{error}}</p>
-					<a @click="create()">Add</a>
+				<div v-else class="controls">
+					<a @click="show()">Edit</a>
 				</div>
 			</div>
 		</template>
@@ -59,9 +69,7 @@
 			<div>
 				<div v-if="header.title">
 					<convo-header :db="header"></convo-header>
-					<div class="controls">
-						<a @click="destroy()">Delete</a>
-					</div>
+					<convo-header-form :fbid="header['.key']"></convo-header-form>
 					<ul>
 						<li v-for="post in all">
 							{{post.content}}

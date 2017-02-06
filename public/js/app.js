@@ -26,9 +26,12 @@ ConvoHeaderList = Vue.component('convoHeaderList', {
 
 ConvoHeaderForm = Vue.component('convoHeaderForm', {
 	template: '#convoHeaderForm',
+	props: ['fbid', 'shownInit'],
 	data: function(){
+		var form = this;
 		return {
 			error: '',
+			shown: (form.shownInit),
 			db: {
 				title: ''
 			}
@@ -37,16 +40,43 @@ ConvoHeaderForm = Vue.component('convoHeaderForm', {
 	methods: {
 		create: function(){
 			var form = this;
-			fb.ref('/convoHeaders').push(form.db, form.ifError);
-			form.reset();
+			fb.ref('/convoHeaders').push(form.db, function(err){
+				if(err){
+					form.ifError(err);
+				}else{
+					form.reset();
+				}
+			});
 		},
 		reset: function(){
 			var form = this;
-			Object.assign(form.$data, ConvoHeaderForm.options.data());
+			Object.assign(form.$data, ConvoHeaderForm.options.data.call(form));
 		},
 		ifError: function(err){
 			var form = this;
 			form.error = (err ? 'Title cannot be blank!' : '');
+		},
+		show: function(){
+			var form = this;
+			form.shown = true;
+			if(form.fbid){
+				form.$bindAsObject('db', fb.ref('/convoHeaders').child(form.fbid));
+			}
+		},
+		hide: function(){
+			var form = this;
+			form.shown = false;
+		},
+		save: function(){
+			var form = this;
+			delete form.db['.key']; //Hmm
+			form.$firebaseRefs.db.update(form.db);
+		},
+		destroy: function(){
+			var form = this;
+			form.$firebaseRefs.db.remove();
+			fb.ref('/convos').child(form.fbid).remove();
+			Router.push({name: 'convoHeaderList'});
 		}
 	}
 });
@@ -90,12 +120,6 @@ Convo = Vue.component('convo', {
 				count: (convo.header.count || 0) + 1
 			});
 			convo.resetNew();
-		},
-		destroy: function(){
-			var convo = this;
-			convo.$firebaseRefs.header.remove();
-			convo.$firebaseRefs.all.remove();
-			Router.push({name: 'convoHeaderList'});
 		}
 	},
 	created: function(){
