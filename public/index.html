@@ -13,7 +13,7 @@
 		<div id="app">
 			<h1>
 				<router-link :to="{name: 'convoHeaderList'}">
-					Hello, world
+					&num;&num;&num;&num;&num;
 				</router-link>
 			</h1>
 
@@ -73,18 +73,30 @@
 					<convo-header :db="header"></convo-header>
 					<convo-header-form :fbid="header['.key']"></convo-header-form>
 					<ul>
-						<li v-for="post in all">
-							{{post.content}}
+						<li v-for="(post, index) in all">
+							{{index + 1}}: <post :db="post"></post>
 						</li>
 						<li>
-							<input v-model="newPost.content" @keydown.enter="createPost()" />
-							<p class="error">{{error}}</p>
+							<post-form :convoid="header['.key']"></post-form>
 						</li>
 					</ul>
 				</div>
 				<div v-else>
 					<h2>This doesn't exist.</h2>
 				</div>
+			</div>
+		</template>
+
+		<template id="post">
+			<span>
+				{{db.content}}
+			</span>
+		</template>
+
+		<template id="postForm">
+			<div>
+				<input v-model="db.content" @keydown.enter="create()" />
+				<p class="error">{{error}}</p>
 			</div>
 		</template>
 

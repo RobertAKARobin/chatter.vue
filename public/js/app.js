@@ -8,7 +8,8 @@ var fb,
 	ConvoHeaderForm,
 	ConvoHeader,
 	Convo,
-	Post;
+	Post,
+	PostForm;
 
 fb = (function(){
 	firebase.initializeApp({
@@ -105,38 +106,13 @@ ConvoHeader = Vue.component('convoHeader', {
 
 Convo = Vue.component('convo', {
 	template: '#convo',
-	props: [
-		'convoHeaderKey'
-	],
 	data: function(){
-		var convo = this;
 		return {
-			newPost: {
-				content: ''
-			},
 			header: {},
 			error: ''
 		}
 	},
 	methods: {
-		resetNew: function(){
-			var convo = this;
-			convo.newPost = new Post();
-		},
-		ifError: function(err){
-			var convo = this;
-			convo.error = (err ? 'Cannot be blank!' : '');
-		},
-		createPost: function(){
-			var convo = this;
-			convo.$firebaseRefs.all.push(convo.newPost, function(err){
-				if(err) convo.ifError(err);
-				else {
-					convo.resetNew();
-					convo.countUp();
-				}
-			});
-		},
 		countUp: function(){
 			var convo = this;
 			convo.$firebaseRefs.header.update({
@@ -152,19 +128,52 @@ Convo = Vue.component('convo', {
 	}
 });
 
-Post = function(){
-	return {
-		content: ''
+Post = Vue.component('post', {
+	template: '#post',
+	props: ['db']
+});
+
+PostForm = Vue.component('postForm', {
+	template: '#postForm',
+	props: ['convoid'],
+	data: function(){
+		return {
+			error: '',
+			db: {
+				content: ''
+			}
+		}
+	},
+	methods: {
+		create: function(){
+			var form = this;
+			fb.ref('/convos').child(form.convoid).push(form.db, function(err){
+				if(err){
+					form.ifError(err);
+				}else{
+					form.$emit('postcreated');
+					form.reset();
+				}
+			});
+		},
+		ifError: function(err){
+			var form = this;
+			form.error = (err ? 'Cannot be blank!' : '');
+		},
+		reset: function(){
+			var form = this;
+			Object.assign(form.$data, PostForm.options.data.call(form));
+		}
 	}
-}
+});
 
 FBConsole = Vue.component('fbConsole', {
+	template: '#fbConsole',
 	data: function(){
 		return {
 			all: null
 		}
 	},
-	template: '#fbConsole',
 	created: function(){
 		var tree = this;
 		tree.$bindAsArray('all', fb.ref('/'));
