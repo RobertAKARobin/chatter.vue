@@ -24,13 +24,13 @@
 		</div>
 
 		<template id="convoHeaderList">
-			<div class="postlist">
+			<div>
 				<ul>
 					<li>
 						<convo-header-form shown-init="true"></convo-header-form>
 					</li>
 					<li v-for="convoHeader in all">
-						<convo-header :db="convoHeader"></convo-headeR>
+						<convo-header :fbid="convoHeader['.key']"></convo-header>
 					</li>
 				</ul>
 			</div>
@@ -70,14 +70,14 @@
 		<template id="convo">
 			<div>
 				<div v-if="header.title">
-					<convo-header :db="header"></convo-header>
+					<convo-header :fbid="header['.key']"></convo-header>
 					<convo-header-form :fbid="header['.key']"></convo-header-form>
 					<ul>
 						<li v-for="(post, index) in all">
-							{{index + 1}}: <post :db="post"></post>
+							{{index + 1}}: {{post.content}}
 						</li>
 						<li>
-							<post-form :convoid="header['.key']"></post-form>
+							<post-form :convo-fbid="header['.key']"></post-form>
 						</li>
 					</ul>
 				</div>
@@ -85,12 +85,6 @@
 					<h2>This doesn't exist.</h2>
 				</div>
 			</div>
-		</template>
-
-		<template id="post">
-			<span>
-				{{db.content}}
-			</span>
 		</template>
 
 		<template id="postForm">

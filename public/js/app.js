@@ -8,7 +8,6 @@ var fb,
 	ConvoHeaderForm,
 	ConvoHeader,
 	Convo,
-	Post,
 	PostForm;
 
 fb = (function(){
@@ -90,17 +89,21 @@ ConvoHeaderForm = Vue.component('convoHeaderForm', {
 
 ConvoHeader = Vue.component('convoHeader', {
 	template: '#convoHeader',
-	props: ['db'],
+	props: ['fbid'],
 	computed: {
 		route: function(){
 			var convoHeader = this;
 			return {
 				name: 'convoShow',
 				params: {
-					id: convoHeader.db['.key']
+					fbid: convoHeader.db['.key']
 				}
 			}
 		}
+	},
+	created: function(){
+		var convoHeader = this;
+		convoHeader.$bindAsObject('db', fb.ref('/convoHeaders').child(convoHeader.fbid));
 	}
 });
 
@@ -108,7 +111,6 @@ Convo = Vue.component('convo', {
 	template: '#convo',
 	data: function(){
 		return {
-			header: {},
 			error: ''
 		}
 	},
@@ -122,20 +124,15 @@ Convo = Vue.component('convo', {
 	},
 	created: function(){
 		var convo = this;
-		var id = convo.$route.params.id;
-		convo.$bindAsObject('header', fb.ref('/convoHeaders').child(id));
-		convo.$bindAsArray('all', fb.ref('/convos').child(id));
+		var fbid = convo.$route.params.fbid;
+		convo.$bindAsObject('header', fb.ref('/convoHeaders').child(fbid));
+		convo.$bindAsArray('all', fb.ref('/convos').child(fbid));
 	}
-});
-
-Post = Vue.component('post', {
-	template: '#post',
-	props: ['db']
 });
 
 PostForm = Vue.component('postForm', {
 	template: '#postForm',
-	props: ['convoid'],
+	props: ['convoFbid'],
 	data: function(){
 		return {
 			error: '',
@@ -147,7 +144,7 @@ PostForm = Vue.component('postForm', {
 	methods: {
 		create: function(){
 			var form = this;
-			fb.ref('/convos').child(form.convoid).push(form.db, function(err){
+			fb.ref('/convos').child(form.convoFbid).push(form.db, function(err){
 				if(err){
 					form.ifError(err);
 				}else{
@@ -189,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function Main(){
 				component: ConvoHeaderList
 			},
 			{
-				path: '/convo/:id',
+				path: '/convo/:fbid',
 				name: 'convoShow',
 				component: Convo
 			}
