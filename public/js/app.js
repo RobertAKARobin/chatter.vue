@@ -3,6 +3,7 @@
 var FB,
 	ConvoList,
 	ConvoShow,
+	PostList,
 	Router;
 
 FB = firebase.initializeApp({
@@ -75,6 +76,36 @@ ConvoShow = Vue.component('convoShow', {
 			var convo = this;
 			convo.$firebaseRefs.db.remove();
 			Router.push({name: 'convoList'});
+		}
+	}
+});
+
+PostList = Vue.component('postList', {
+	template: '#postList',
+	props: ['convoFbid'],
+	data: function(){
+		return {
+			error: '',
+			form: {
+				content: ''
+			}
+		}
+	},
+	created: function(){
+		var list = this;
+		list.$bindAsArray('posts', FB.ref('/posts').child(list.convoFbid));
+	},
+	methods: {
+		create: function(){
+			var list = this;
+			list.$firebaseRefs.posts.push(list.form, function(err){
+				if(err){
+					list.error = 'Nope!';
+				}else{
+					list.error = '';
+					list.form = PostList.options.data.call(list).form;
+				}
+			});
 		}
 	}
 });

@@ -58,10 +58,26 @@
 					<div v-else>
 						<button @click="isEditing = true">Edit</button>
 					</div>
+					<post-list :convo-fbid="db['.key']"></post-list>
 				</div>
 				<div v-else>
 					<h2>This doesn't exist.</h2>
 				</div>
+			</div>
+		</template>
+
+		<template id="postList">
+			<div>
+				<ul>
+					<li v-for="(post, index) in posts">
+						{{index + 1}}: {{post.content}}
+					</li>
+					<li>
+						<input v-model="form.content" />
+						<p class="error">{{error}}</p>
+						<button @click="create()">Post</button>
+					</li>
+				</ul>
 			</div>
 		</template>
 
