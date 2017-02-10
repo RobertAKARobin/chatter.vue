@@ -20,9 +20,6 @@ ConvoList = Vue.component('convoList', {
 			}
 		}
 	},
-	firebase: {
-		convos: FB.ref('/convos')
-	},
 	methods: {
 		create: function(){
 			var list = this;
@@ -35,6 +32,10 @@ ConvoList = Vue.component('convoList', {
 				}
 			});
 		}
+	},
+	created: function(){
+		var list = this;
+		list.$bindAsArray('convos', FB.ref('/convos'));
 	}
 });
 
@@ -45,19 +46,6 @@ ConvoShow = Vue.component('convoShow', {
 		return {
 			isEditing: false,
 			error: ''
-		}
-	},
-	firebase: function(){
-		var convo = this;
-		return {
-			db: {
-				source: FB.ref('/convos').child(convo.$route.params.fbid),
-				asObject: true
-			},
-			form: {
-				source: FB.ref('/convos').child(convo.$route.params.fbid),
-				asObject: true
-			}
 		}
 	},
 	methods: {
@@ -77,6 +65,11 @@ ConvoShow = Vue.component('convoShow', {
 			convo.$firebaseRefs.db.remove();
 			Router.push({name: 'convoList'});
 		}
+	},
+	created: function(){
+		var convo = this;
+		convo.$bindAsObject('db', FB.ref('/convos').child(convo.$route.params.fbid));
+		convo.$bindAsObject('form', FB.ref('/convos').child(convo.$route.params.fbid));
 	}
 });
 
@@ -91,10 +84,6 @@ PostList = Vue.component('postList', {
 			}
 		}
 	},
-	created: function(){
-		var list = this;
-		list.$bindAsArray('posts', FB.ref('/posts').child(list.convoFbid));
-	},
 	methods: {
 		create: function(){
 			var list = this;
@@ -107,6 +96,10 @@ PostList = Vue.component('postList', {
 				}
 			});
 		}
+	},
+	created: function(){
+		var list = this;
+		list.$bindAsArray('posts', FB.ref('/posts').child(list.convoFbid));
 	}
 });
 
