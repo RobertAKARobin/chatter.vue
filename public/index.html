@@ -50,13 +50,19 @@
 
 		<template id="convoShow">
 			<div>
-				<h2>{{db.title}}</h2>
-				<div v-if="isEditing">
-					<input v-model="form.title" @keyup.enter="save()" />
-					<a @click="isEditing = false">Cancel</a>
+				<div v-if="db.title">
+					<h2>{{db.title}}</h2>
+					<div v-if="isEditing">
+						<input v-model="form.title" @keyup.enter="save()" />
+						<a @click="isEditing = false">Cancel</a>
+						<a @click="destroy()">Delete</a>
+					</div>
+					<div v-else>
+						<a @click="isEditing = true">Edit</a>
+					</div>
 				</div>
 				<div v-else>
-					<a @click="isEditing = true">Edit</a>
+					<h2>This doesn't exist.</h2>
 				</div>
 			</div>
 		</template>

@@ -63,6 +63,11 @@ ConvoShow = Vue.component('convoShow', {
 			var convo = this;
 			delete convo.form['.key'];
 			convo.$firebaseRefs.db.update(convo.form);
+		},
+		destroy: function(){
+			var convo = this;
+			convo.$firebaseRefs.db.remove();
+			Router.push({name: 'convoList'});
 		}
 	}
 });
