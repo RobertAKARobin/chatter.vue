@@ -26,9 +26,29 @@
 		</div>
 
 		<template id="convoList">
-			<div>
-				<h2>list</h2>
+			<div class="convoList">
+				<ul>
+					<li>
+						<convo-form-new></convo-form-new>
+					</li>
+					<li v-for="convo in convos">
+						<convo :fbid="convo['.key']"></convo>
+					</li>
+				</ul>
 			</div>
 		</template>
+
+		<template id="convoFormNew">
+			<div>
+				<input v-model="db.title" @keyup.enter="create()" />
+			</div>
+		</template>
+
+		<template id="convo">
+			<div>
+				<h2>{{db.title}}</h2>
+			</div>
+		</template>
+
 	</body>
 </html>
