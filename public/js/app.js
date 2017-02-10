@@ -3,7 +3,7 @@
 var FB,
 	ConvoList,
 	ConvoFormNew,
-	Convo,
+	ConvoShow,
 	Router;
 
 FB = firebase.initializeApp({
@@ -35,14 +35,14 @@ ConvoFormNew = Vue.component('convoFormNew', {
 	}
 });
 
-Convo = Vue.component('convo', {
-	template: '#convo',
+ConvoShow = Vue.component('convoShow', {
+	template: '#convoShow',
 	props: ['fbid'],
 	firebase: function(){
 		var convo = this;
 		return {
 			db: {
-				source: FB.ref('/convos').child(convo.fbid),
+				source: FB.ref('/convos').child(convo.$route.params.fbid),
 				asObject: true
 			}
 		}
@@ -55,6 +55,11 @@ Router = new VueRouter({
 			path: '/',
 			name: 'convoList',
 			component: ConvoList
+		},
+		{
+			path: '/convo/:fbid',
+			name: 'convoShow',
+			component: ConvoShow
 		}
 	]
 });

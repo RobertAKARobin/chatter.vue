@@ -32,7 +32,11 @@
 						<convo-form-new></convo-form-new>
 					</li>
 					<li v-for="convo in convos">
-						<convo :fbid="convo['.key']"></convo>
+						<h2>
+							<router-link :to="{name: 'convoShow', params: {fbid: convo['.key']}}">
+								{{convo.title}}
+							</router-link>
+						</h2>
 					</li>
 				</ul>
 			</div>
@@ -44,7 +48,7 @@
 			</div>
 		</template>
 
-		<template id="convo">
+		<template id="convoShow">
 			<div>
 				<h2>{{db.title}}</h2>
 			</div>
