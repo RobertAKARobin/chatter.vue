@@ -1,10 +1,7 @@
 'use strict';
 
 var FB,
-	Convo,
 	ConvoList,
-	ConvoFormNew,
-	ConvoFormEdit,
 	ConvoShow,
 	Router;
 
@@ -14,13 +11,6 @@ FB = firebase.initializeApp({
 
 ConvoList = Vue.component('convoList', {
 	template: '#convoList',
-	firebase: {
-		convos: FB.ref('/convos')
-	}
-});
-
-ConvoFormNew = Vue.component('convoFormNew', {
-	template: '#convoFormNew',
 	data: function(){
 		return {
 			form: {
@@ -28,11 +18,14 @@ ConvoFormNew = Vue.component('convoFormNew', {
 			}
 		}
 	},
+	firebase: {
+		convos: FB.ref('/convos')
+	},
 	methods: {
 		create: function(){
-			var convo = this;
-			FB.ref('/convos').push(convo.form);
-			Object.assign(convo.$data, ConvoFormNew.options.data.call(convo));
+			var list = this;
+			FB.ref('/convos').push(list.form);
+			list.form = ConvoList.options.data.call(list).form;
 		}
 	}
 });

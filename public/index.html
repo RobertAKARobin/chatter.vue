@@ -29,7 +29,7 @@
 			<div class="convoList">
 				<ul>
 					<li>
-						<convo-form-new></convo-form-new>
+						<input v-model="form.title" @keyup.enter="create()" />
 					</li>
 					<li v-for="convo in convos">
 						<h2>
@@ -39,12 +39,6 @@
 						</h2>
 					</li>
 				</ul>
-			</div>
-		</template>
-
-		<template id="convoFormNew">
-			<div>
-				<input v-model="form.title" @keyup.enter="create()" />
 			</div>
 		</template>
 
