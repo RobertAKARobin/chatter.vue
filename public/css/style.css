@@ -57,20 +57,44 @@ h1{
 	font-family:monospace;
 	background-color:#eee;
 }
-li{
+.convoList > li,
+.postList > li{
 	display:block;
 	margin-bottom:10px;
-	padding-left:10px;
+	padding:0 10px;
 	border-left:2px solid #ccc;
+}
+.tagListInput{
+	display:flex;
+	justify-content:space-between;
+}
+.tagListInput > li{
+	display:block;
+	flex-shrink:1;
+}
+.tagListInput input{
+	width:100%;
+}
+.tagList {
+	display:inline-block;
+}
+.tagList > li{
+	display:inline-block;
+	background-color:#eee;
+	padding:0 5px;
+	margin-left:5px;
 }
 .error{
 	color:red;
 }
 input{
 	display:block;
+	width:100%;
 	border-width:2px;
 	border-style:solid;
 	border-color:#bbb #bbb #ddd #ddd;
 	padding:2px 5px;
+	margin-bottom:5px;
 	overflow:hidden;
+	box-sizing:border-box;
 }

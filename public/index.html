@@ -26,10 +26,15 @@
 		</div>
 
 		<template id="convoList">
-			<div class="convoList">
-				<ul>
+			<div>
+				<ul class="convoList">
 					<li>
 						<input v-model="form.title" />
+						<ul class="tagListInput">
+							<li v-for="tag in tags">
+								<input v-model="tag.name" />
+							</li>
+						</ul>
 						<p class="error">{{error}}</p>
 						<button @click="create()">Add</button>
 					</li>
@@ -38,6 +43,9 @@
 							<router-link :to="{name: 'convoShow', params: {fbid: convo['.key']}}">
 								{{convo.title}}
 							</router-link>
+							<ul class="tagList">
+								<li v-for="tag in convo.tags">{{tag.name}}</li>
+							</ul>
 						</h2>
 					</li>
 				</ul>
@@ -68,7 +76,7 @@
 
 		<template id="postList">
 			<div>
-				<ul>
+				<ul class="postList">
 					<li v-for="(post, index) in posts">
 						{{index + 1}}: {{post.content}}
 					</li>

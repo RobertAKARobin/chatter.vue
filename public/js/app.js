@@ -15,14 +15,25 @@ ConvoList = Vue.component('convoList', {
 	data: function(){
 		return {
 			error: '',
+			tags: [
+				{name: ''},
+				{name: ''},
+				{name: ''}
+			],
 			form: {
-				title: Math.round(Date.now() / 1000)
+				title: Math.round(Date.now() / 1000),
+				tags: {}
 			}
 		}
 	},
 	methods: {
 		create: function(){
 			var list = this;
+			var form = list.form;
+			form.tags = {};
+			list.tags.forEach(function(tag){
+				form.tags[tag.name] = true;
+			});
 			FB.ref('/convos').push(list.form, function(err){
 				if(err){
 					list.error = 'Nope!';
