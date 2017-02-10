@@ -44,13 +44,20 @@
 
 		<template id="convoFormNew">
 			<div>
-				<input v-model="db.title" @keyup.enter="create()" />
+				<input v-model="form.title" @keyup.enter="create()" />
 			</div>
 		</template>
 
 		<template id="convoShow">
 			<div>
 				<h2>{{db.title}}</h2>
+				<div v-if="isEditing">
+					<input v-model="form.title" @keyup.enter="save()" />
+					<a @click="isEditing = false">Cancel</a>
+				</div>
+				<div v-else>
+					<a @click="isEditing = true">Edit</a>
+				</div>
 			</div>
 		</template>
 

@@ -1,8 +1,10 @@
 'use strict';
 
 var FB,
+	Convo,
 	ConvoList,
 	ConvoFormNew,
+	ConvoFormEdit,
 	ConvoShow,
 	Router;
 
@@ -21,16 +23,16 @@ ConvoFormNew = Vue.component('convoFormNew', {
 	template: '#convoFormNew',
 	data: function(){
 		return {
-			db: {
+			form: {
 				title: Math.round(Date.now() / 1000)
 			}
 		}
 	},
 	methods: {
 		create: function(){
-			var input = this;
-			FB.ref('/convos').push(input.db);
-			Object.assign(input.$data, ConvoFormNew.options.data.call(input));
+			var convo = this;
+			FB.ref('/convos').push(convo.form);
+			Object.assign(convo.$data, ConvoFormNew.options.data.call(convo));
 		}
 	}
 });
@@ -38,13 +40,29 @@ ConvoFormNew = Vue.component('convoFormNew', {
 ConvoShow = Vue.component('convoShow', {
 	template: '#convoShow',
 	props: ['fbid'],
+	data: function(){
+		return {
+			isEditing: false
+		}
+	},
 	firebase: function(){
 		var convo = this;
 		return {
 			db: {
 				source: FB.ref('/convos').child(convo.$route.params.fbid),
 				asObject: true
+			},
+			form: {
+				source: FB.ref('/convos').child(convo.$route.params.fbid),
+				asObject: true
 			}
+		}
+	},
+	methods: {
+		save: function(){
+			var convo = this;
+			delete convo.form['.key'];
+			convo.$firebaseRefs.db.update(convo.form);
 		}
 	}
 });
@@ -57,7 +75,7 @@ Router = new VueRouter({
 			component: ConvoList
 		},
 		{
-			path: '/convo/:fbid',
+			path: '/convos/:fbid',
 			name: 'convoShow',
 			component: ConvoShow
 		}
