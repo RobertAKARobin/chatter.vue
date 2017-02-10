@@ -3,14 +3,32 @@
 	<head>
 		<title>Chatter.vue</title>
 		<script src="./vendor/vue/dist/vue.js"></script>
+		<script src="./vendor/vuefire/dist/vuefire.js"></script>
+		<script src="./vendor/vue-router/dist/vue-router.js"></script>
 		<script src="./vendor/firebase/firebase.js"></script>
 		<script src="./js/app.js"></script>
+		<link rel="stylesheet" href="./css/style.css" />
 	</head>
 	<body>
-		<h1>Hello, world</h1>
+		<div class="wrap">
+			<div id="app">
+				<h1>
+					<router-link :to="{name: 'convoList'}">
+						&num;&num;&num;&num;&num;
+					</router-link>
+				</h1>
+				<router-view></router-view>
+			</div>
 
-		<div id="app">
-			<h2>{{message}}</h2>
+			<div id="console">
+				<textarea disabled>{{all}}</textarea>
+			</div>
 		</div>
+
+		<template id="convoList">
+			<div>
+				<h2>list</h2>
+			</div>
+		</template>
 	</body>
 </html>
