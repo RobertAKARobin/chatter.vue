@@ -1,6 +1,22 @@
 {
 	"rules": {
 		".read": true,
-		".write": true
+		".write": true,
+		"convos": {
+			"$convo": {
+				"title": {
+					".validate": "newData.val().length > 0"
+				}
+			}
+		},
+		"posts": {
+			"$convo": {
+				"$post": {
+					"content": {
+						".validate": "newData.val().length > 0"
+					}
+				}
+			}
+		}
 	}
 }

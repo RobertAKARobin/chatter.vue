@@ -13,6 +13,7 @@ ConvoList = Vue.component('convoList', {
 	template: '#convoList',
 	data: function(){
 		return {
+			error: '',
 			form: {
 				title: Math.round(Date.now() / 1000)
 			}
@@ -24,8 +25,14 @@ ConvoList = Vue.component('convoList', {
 	methods: {
 		create: function(){
 			var list = this;
-			FB.ref('/convos').push(list.form);
-			list.form = ConvoList.options.data.call(list).form;
+			FB.ref('/convos').push(list.form, function(err){
+				if(err){
+					list.error = 'Nope!';
+				}else{
+					list.error = '';
+					list.form = ConvoList.options.data.call(list).form;
+				}
+			});
 		}
 	}
 });
@@ -35,7 +42,8 @@ ConvoShow = Vue.component('convoShow', {
 	props: ['fbid'],
 	data: function(){
 		return {
-			isEditing: false
+			isEditing: false,
+			error: ''
 		}
 	},
 	firebase: function(){
@@ -55,7 +63,13 @@ ConvoShow = Vue.component('convoShow', {
 		save: function(){
 			var convo = this;
 			delete convo.form['.key'];
-			convo.$firebaseRefs.db.update(convo.form);
+			convo.$firebaseRefs.db.update(convo.form, function(err){
+				if(err){
+					convo.error = 'Nope!';
+				}else{
+					convo.error = '';
+				}
+			});
 		},
 		destroy: function(){
 			var convo = this;

@@ -29,7 +29,9 @@
 			<div class="convoList">
 				<ul>
 					<li>
-						<input v-model="form.title" @keyup.enter="create()" />
+						<input v-model="form.title" />
+						<p class="error">{{error}}</p>
+						<button @click="create()">Add</button>
 					</li>
 					<li v-for="convo in convos">
 						<h2>
@@ -47,12 +49,14 @@
 				<div v-if="db.title">
 					<h2>{{db.title}}</h2>
 					<div v-if="isEditing">
-						<input v-model="form.title" @keyup.enter="save()" />
-						<a @click="isEditing = false">Cancel</a>
-						<a @click="destroy()">Delete</a>
+						<input v-model="form.title" />
+						<p class="error">{{error}}</p>
+						<button @click="isEditing = false">Cancel</button>
+						<button @click="save()">Save</button>
+						<button @click="destroy()">Delete</button>
 					</div>
 					<div v-else>
-						<a @click="isEditing = true">Edit</a>
+						<button @click="isEditing = true">Edit</button>
 					</div>
 				</div>
 				<div v-else>

@@ -9,6 +9,7 @@
 	text-decoration: inherit;
 	line-height: inherit;
 	color: inherit;
+	background-color:transparent;
 }
 *:focus{
 	outline:none;
@@ -22,14 +23,19 @@ html{
 body{
 	padding:18px;
 }
-a{
+a, button{
 	color:#0000ff;
 	text-decoration:underline;
 	cursor:pointer;
 }
-a.disabled{
+a.disabled,
+button.disabled{
 	color:#999;
 	cursor:default;
+}
+a:focus,
+button:focus{
+	text-shadow:1px 1px 1px #99c;
 }
 h1{
 	font-size:36px;
